@@ -27,9 +27,11 @@ class TagSelect extends React.Component {
     onMaxError: PropTypes.func,
     onItemPress: PropTypes.func,
 
-    // Styles
-    containerStyle: ViewPropTypes.style
-  }
+   // Styles
+   containerStyle: PropTypes.shape({
+    style: PropTypes.any,
+  }),
+}
 
   static defaultProps = {
     value: [],
@@ -58,6 +60,18 @@ class TagSelect extends React.Component {
     })
 
     this.setState({ value })
+  }
+
+  componentDidUpdate(prevProps, prevState, prevContext) {
+    if (prevProps !== this.props) {
+      const value = {}
+
+      this.props.value.forEach((val) => {
+        value[val[[this.props.keyAttr]] || val] = val
+      })
+
+      this.setState({ value })
+    }
   }
 
   /**
@@ -147,3 +161,4 @@ const styles = StyleSheet.create({
 })
 
 export default TagSelect
+

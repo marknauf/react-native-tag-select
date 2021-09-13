@@ -7,6 +7,7 @@ import {
   StyleSheet,
   TouchableOpacity
 } from 'react-native'
+import LinearGradient from 'react-native-linear-gradient'
 
 TagSelectItem.propTypes = {
   label: PropTypes.string,
@@ -29,8 +30,12 @@ TagSelectItem.propTypes = {
     'danger',
     'warning'
   ]),
-  itemStyle: ViewPropTypes.style,
-  itemStyleSelected: ViewPropTypes.style,
+  itemStyle: PropTypes.shape({
+    style: PropTypes.any,
+  }),
+  itemStyleSelected: PropTypes.shape({
+    style: PropTypes.any,
+  }),
   itemLabelStyle: PropTypes.any,
   itemLabelStyleSelected: PropTypes.any
 }
@@ -55,6 +60,35 @@ function TagSelectItem (props) {
         onPress={props.onPress}
         activeOpacity={props.activeOpacity}
       >
+      {props.selected ? 
+        <LinearGradient
+        style={{borderWidth: 0,
+        borderRadius: 10}}
+        start={{ x: 0, y: 1 }}
+        end={{ x: 1, y: 1 }}
+        colors={['#276EB8', '#7E3DA4', '#DC088E']}
+          >
+    <View
+      style={[
+        styles.inner,
+        styles[`gradientInner`],
+        // props.itemStyle,
+      ]}
+    >
+      <Text
+        numberOfLines={1}
+        style={[
+          styles[`${props.theme}LabelText`],
+          props.itemLabelStyle,
+          props.selected && styles[`${props.theme}LabelTextSelected`],
+          props.selected && props.itemLabelStyleSelected
+        ]}
+      >
+        {props.label}
+      </Text>
+    </View>
+    </LinearGradient>
+       : 
         <View
           style={[
             styles.inner,
@@ -76,7 +110,10 @@ function TagSelectItem (props) {
             {props.label}
           </Text>
         </View>
+        }
+      
       </TouchableOpacity>
+
     </View>
   )
 }
@@ -89,7 +126,11 @@ const styles = StyleSheet.create({
   inner: {
     padding: 10,
     borderWidth: 1,
-    borderRadius: 6
+    borderRadius: 6,
+  },
+  gradientInner: {
+    backgroundColor: 'rgba(0,0,0,0)',
+    borderColor: 'rgba(0,0,0,0)'
   },
   defaultInner: {
     backgroundColor: '#f8f9fa',
@@ -178,3 +219,4 @@ const styles = StyleSheet.create({
 })
 
 export default TagSelectItem
+
